@@ -12,6 +12,14 @@
 3. Follow the identified stack's specific guidelines and best practices throughout development
 4. **Don't forget to follow ALL instructions in this `Agents.md` file**
 
+## ⚠️ IMPORTANT: Authorization Required
+
+**The user requires the assistant to only proceed with actions or commands after receiving explicit authorization from them.**
+
+## 📋 MANDATORY: Step-by-Step Change Documentation
+
+**For every change requested in the agent model, the user must receive a detailed step-by-step guide with the specifics of every change made.**
+
 ## Core Principles
 
 ### General Development Approach
