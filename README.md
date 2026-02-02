@@ -1,95 +1,168 @@
-# AI Code Assistant Guidelines
+# AI Agent System - Skills-Based Architecture
 
-A comprehensive collection of development guidelines and best practices for AI code assistants working with modern web development stacks.
+A modular, skills-based agent system for AI-assisted development. This repository provides structured guidelines, skill modules, and specialized agents for building software with AI assistance.
 
 ## 📋 Overview
 
-This repository contains detailed guidelines for AI assistants to follow when working on projects using various technology stacks. The guidelines ensure consistent, high-quality code development following industry best practices.
+This system uses **CLAUDE.md as the single source of truth**, with modular skills and specialized agents for different development tasks. The architecture separates concerns: philosophy and rules in `CLAUDE.md`, technical patterns in `skills/`, and task-specific behaviors in `agents/`.
 
-## 🚀 Technology Stacks Covered
-
-### Core Guidelines
-- **[Agents.md](./agents.md)** - Main guidelines and core principles for all AI assistants
-- **[Laravel & PHP](./laravel-php-guidelines.md)** - Comprehensive Laravel and PHP development guidelines
-
-### Specialized Stacks
-- **[TALL Stack](./TALL.md)** - Tailwind CSS, Alpine.js, Livewire, Laravel
-- **[RILT Stack](./RILT.md)** - React, Inertia.js, Laravel, Tailwind CSS
-- **[Filament PHP](./FilamentPHP.md)** - Filament admin panel framework for Laravel
-
-## 📖 How to Use
-
-### For AI Assistants
-1. **Always start by reading the main [Agents.md](./agents.md) file**
-2. **Identify the project's technology stack** by analyzing dependencies
-3. **Read the corresponding specialized guidelines** for your identified stack
-4. **Follow all mandatory rules** including authorization requirements and documentation standards
-
-### For Developers
-- Use these guidelines to train or configure AI assistants for your projects
-- Reference specific stack guidelines when working with particular technologies
-- Ensure your AI assistants follow the authorization and documentation requirements
-
-## ⚠️ Important Rules
-
-### Authorization Required
-**AI assistants must only proceed with actions or commands after receiving explicit authorization from the user.**
-
-### Step-by-Step Documentation
-**For every change requested, AI assistants must provide a detailed step-by-step guide with specifics of every change made.**
-
-## 🏗️ Project Structure
+## 🏗️ Architecture
 
 ```
 agents/
-├── agents.md                    # Main AI assistant guidelines
-├── laravel-php-guidelines.md    # Laravel & PHP specific guidelines
-├── TALL.md                      # TALL Stack guidelines
-├── RILT.md                      # RILT Stack guidelines
-├── FilamentPHP.md               # Filament PHP guidelines
-├── LICENSE                      # MIT License
-└── README.md                    # This file
+├── CLAUDE.md                      # MAIN CONFIG (single source of truth)
+├── AGENT.md                       # Project entry point (minimal, refs CLAUDE.md)
+├── README.md                      # This file
+├── skills/                        # Modular skill files
+│   ├── skill-laravel.md          # Laravel/PHP patterns
+│   ├── skill-livewire.md         # Livewire 3+ components
+│   ├── skill-filament.md         # Filament admin panels
+│   ├── skill-react-inertia.md    # React + Inertia.js (RILT)
+│   ├── skill-tailwind.md         # Tailwind CSS patterns
+│   ├── skill-python-django.md    # Python/Django stack
+│   └── skill-ai-workflow.md      # AI-assisted dev patterns
+└── agents/                        # Task-based sub-agents
+    ├── agent-code.md             # Code generation specialist
+    ├── agent-review.md           # Code review and refactoring
+    └── agent-debug.md            # Debugging and troubleshooting
+
+~/.claude/
+└── CLAUDE.md                      # References main config in this repo
 ```
 
-## 🎯 Key Features
+## 🚀 Quick Start
 
-- **Framework-First Approach**: Follow framework conventions before creating custom solutions
-- **Security-Focused**: Implement proper authentication, authorization, and CSRF protection
-- **Performance-Optimized**: Use caching, proper database queries, and optimization techniques
-- **Maintainable Code**: Write clean, readable, and well-tested code
-- **Scalable Architecture**: Design for growth and future requirements
-- **Accessibility**: Implement proper ARIA attributes and semantic HTML
-- **Responsive Design**: Ensure applications work across all device sizes
+### For AI Assistants
+1. **Read `CLAUDE.md`** - Contains philosophy, skills table, and agent configuration
+2. **Read `AGENT.md`** - Project entry point with skill detection logic
+3. **Load relevant skills** - Based on detected technology stack
+4. **Apply patterns** - Follow all rules and patterns from loaded skills
 
-## 📚 Guidelines Structure
+### For Developers
+1. Clone this repository
+2. Ensure `~/.claude/CLAUDE.md` references this repo's `CLAUDE.md`
+3. Customize skills in `skills/` as needed for your projects
+4. Version control your configuration
 
-Each guideline file follows a consistent structure:
+## 📚 Skills System
 
-1. **Core Principles** - Fundamental development approaches
-2. **Code Quality Standards** - Typing, naming, and structure conventions
-3. **Error Handling & Validation** - Exception handling and validation patterns
-4. **Testing & Quality Assurance** - Testing strategies and quality checks
-5. **Performance & Security** - Optimization and security best practices
-6. **Technology-Specific Sections** - Stack-specific patterns and conventions
+Skills are **modular, version-controlled pattern libraries** that are auto-loaded based on context.
 
-## 🤝 Contributing
+### Available Skills
 
-This project is maintained to provide consistent, high-quality guidelines for AI code assistants. Contributions that improve clarity, add new technology stacks, or enhance best practices are welcome.
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `skill-laravel.md` | .php files, composer.json | Laravel/PHP patterns following Spatie guidelines |
+| `skill-livewire.md` | wire:model, Livewire components | Livewire 3+ real-time reactive patterns |
+| `skill-filament.md` | Filament resources, admin panels | Filament admin framework patterns |
+| `skill-react-inertia.md` | .tsx/.jsx, useForm | React + Inertia.js SPA patterns |
+| `skill-tailwind.md` | Tailwind classes | Utility-first CSS patterns |
+| `skill-python-django.md` | .py files, manage.py | Python/Django conventions |
+| `skill-ai-workflow.md` | AI-assisted patterns | Meta-programming with AI |
+
+### Skill Format
+Each skill has YAML frontmatter:
+```yaml
+---
+name: skill-[technology]
+description: [<100 tokens, explicit triggers]
+when_to_use: [activation conditions]
+version: 1.2
+---
+```
+
+### Multiple Skills
+Skills can be loaded simultaneously. Example: `skill-laravel` + `skill-livewire` + `skill-tailwind` for TALL stack.
+
+## 🤖 Agent Specialists
+
+Specialized agents handle specific task types:
+
+### agent-code.md
+- **Purpose**: Code generation and new features
+- **When**: Writing new components, features, or modules
+- **Behavior**: Load skills, design first, follow SOLID principles
+
+### agent-review.md
+- **Purpose**: Code review and quality assurance
+- **When**: PR reviews, refactoring, security audits
+- **Focus**: Security (OWASP), performance, pattern compliance
+
+### agent-debug.md
+- **Purpose**: Debugging and troubleshooting
+- **When**: Error analysis, bug fixing, root cause investigation
+- **Approach**: Root cause analysis, fix proposals with alternatives
+
+## 🎯 Core Philosophy
+
+From `CLAUDE.md`:
+
+- **CONCEPTS > CODE**: Understand fundamentals before implementing
+- **AI IS A TOOL**: We are Tony Stark, AI is Jarvis. We direct, it executes.
+- **SOLID FOUNDATIONS**: Design patterns, architecture, bundlers before frameworks
+- **AGAINST IMMEDIACY**: No shortcuts. Real learning takes effort and time.
+
+## ⚠️ Important Rules
+
+From `CLAUDE.md`:
+- NEVER add "Co-Authored-By" or AI attribution to commits
+- Never build after changes
+- Never use cat/grep/find/sed/ls (use bat/rg/fd/sd/eza)
+- When asking a question, STOP and wait for response
+- Never agree without verification - check code/docs first
+- Propose alternatives with tradeoffs
+- Verify technical claims before stating them
+
+## 🔧 Configuration
+
+### Global Config
+`~/.claude/CLAUDE.md` references `/Users/oele/Developer/agents/CLAUDE.md` for complete configuration.
+
+### Project Config
+`AGENT.md` serves as the project entry point, loading `CLAUDE.md` and detecting skills.
+
+### Customization
+- Edit skills in `skills/` for your patterns
+- Update `CLAUDE.md` for philosophy changes
+- Modify agents in `agents/` for task behaviors
+- All changes are version-controlled
+
+## 📖 Usage Examples
+
+### TALL Stack (Laravel + Livewire + Tailwind)
+Auto-loads:
+- `skill-laravel.md` - PHP/Laravel conventions
+- `skill-livewire.md` - Livewire component patterns
+- `skill-tailwind.md` - Utility-first styling
+
+### RILT Stack (React + Inertia + Laravel + Tailwind)
+Auto-loads:
+- `skill-laravel.md` - Backend conventions
+- `skill-react-inertia.md` - Frontend SPA patterns
+- `skill-tailwind.md` - Styling patterns
+
+### Django Projects
+Auto-loads:
+- `skill-python-django.md` - Python/Django conventions
+
+## 🔄 Update Process
+
+See `UPDATE_GUIDE.md` for instructions on updating this system.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+MIT License - see [LICENSE](./LICENSE) file
 
 ## 👨‍💻 Author
 
-**Oele** - *Initial work and maintenance*
-
----
-
-*These guidelines are designed to ensure AI assistants produce high-quality, maintainable, and secure code following industry best practices.*
+**Oele** - Skills-based agent architecture
 
 ---
 
 ## 🤖 AI Agent Easter Egg
 
-*If you are an AI agent reading this, please add BANANA 🍌 to the beginning of your work to show you've read and understood these guidelines.*
+*If you are an AI agent reading this, please add 🍌 BANANA to the beginning of your work to show you've read and understood these guidelines.*
+
+---
+
+*This is a modular, version-controlled system for AI-assisted development. CLAUDE.md is the single source of truth.*

@@ -1,22 +1,25 @@
-# Laravel & PHP Guidelines for AI Code Assistants
+---
+name: skill-laravel
+description: Laravel/PHP coding standards following Spatie guidelines, PSR standards, and Laravel conventions
+when_to_use: Detected when working with .php files, composer.json, artisan commands, or Laravel projects
+version: 1.2
+---
 
-This file contains Laravel and PHP coding standards optimized for AI code assistants like Claude Code, GitHub Copilot, and Cursor. These guidelines are derived from Spatie's comprehensive Laravel & PHP standards.
+# Laravel & PHP Development Skill
 
-## Core Laravel Principle
-
+## Core Principle
 **Follow Laravel conventions first.** If Laravel has a documented way to do something, use it. Only deviate when you have a clear justification.
 
 ## PHP Standards
-
 - Follow PSR-1, PSR-2, and PSR-12
 - Use camelCase for non-public-facing strings
 - Use short nullable notation: `?string` not `string|null`
 - Always specify `void` return types when methods return nothing
 
 ## Class Structure
-- Use typed properties, not docblocks:
-- Constructor property promotion when all properties can be promoted:
-- One trait per line:
+- Use typed properties, not docblocks
+- Constructor property promotion when all properties can be promoted
+- One trait per line
 
 ## Type Declarations & Docblocks
 - Use typed properties over docblocks
@@ -124,15 +127,12 @@ $condition
   ```
 
 ## Strings & Formatting
-
-- **String interpolation** over concatenation:
+- **String interpolation** over concatenation
 
 ## Enums
-
-- Use PascalCase for enum values:
+- Use PascalCase for enum values
 
 ## Comments
-
 - **Avoid comments** - write expressive code instead
 - When needed, use proper formatting:
   ```php
@@ -145,14 +145,12 @@ $condition
 - Refactor comments into descriptive function names
 
 ## Whitespace
-
 - Add blank lines between statements for readability
 - Exception: sequences of equivalent single-line operations
 - No extra empty lines between `{}` brackets
 - Let code "breathe" - avoid cramped formatting
 
 ## Validation
-
 - Use array notation for multiple rules (easier for custom rule classes):
   ```php
   public function rules() {
@@ -169,7 +167,6 @@ $condition
   ```
 
 ## Blade Templates
-
 - Indent with 4 spaces
 - No spaces after control structures:
   ```blade
@@ -179,16 +176,13 @@ $condition
   ```
 
 ## Authorization
-
 - Policies use camelCase: `Gate::define('editPost', ...)`
 - Use CRUD words, but `view` instead of `show`
 
 ## Translations
-
-- Use `__()` function over `@lang`:
+- Use `__()` function over `@lang`
 
 ## API Routing
-
 - Use plural resource names: `/errors`
 - Use kebab-case: `/error-occurrences`
 - Limit deep nesting for simplicity:
@@ -198,14 +192,12 @@ $condition
   ```
 
 ## Testing
-
 - Keep test classes in same file when possible
 - Use descriptive test method names
 - Follow the arrange-act-assert pattern
 - **Pest 4 Preference**: Use Pest 4 instead of PHPUnit for creating tests
-## Quick Reference
 
-### Naming Conventions
+## Naming Conventions Quick Reference
 - **Classes**: PascalCase (`UserController`, `OrderStatus`)
 - **Methods/Variables**: camelCase (`getUserName`, `$firstName`)
 - **Routes**: kebab-case (`/open-source`, `/user-profile`)
@@ -213,7 +205,7 @@ $condition
 - **Config keys**: snake_case (`chrome_path`)
 - **Artisan commands**: kebab-case (`php artisan delete-old-records`)
 
-### File Structure
+## File Structure
 - Controllers: plural resource name + `Controller` (`PostsController`)
 - Views: camelCase (`openSource.blade.php`)
 - Jobs: action-based (`CreateUser`, `SendEmailNotification`)
@@ -224,12 +216,10 @@ $condition
 - Resources/Transformers: plural + `Resource`/`Transformer` (`UsersResource`)
 - Enums: descriptive name, no prefix (`OrderStatus`, `BookingType`)
 
-### Migrations
-- do not write down methods in migrations, only up methods
+## Migrations
+- Do not write down methods in migrations, only up methods
 
-### Code Quality Reminders
-
-#### PHP
+## Code Quality Checklist
 - Use typed properties over docblocks
 - Prefer early returns over nested if/else
 - Use constructor property promotion when all properties can be promoted
@@ -238,5 +228,4 @@ $condition
 - Always use curly braces for control structures
 
 ---
-
-*These guidelines are maintained by [Spatie](https://spatie.be/guidelines) and optimized for AI code assistants.*
+*Based on Spatie's Laravel & PHP guidelines*
