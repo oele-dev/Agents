@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Obsidian
+.obsidian/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Personal notes
+2026-*.md
+
+# Untitled files
+Untitled.*
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
