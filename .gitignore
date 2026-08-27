@@ -23,3 +23,6 @@ Untitled.*
 .vscode/
 .idea/
 *.code-workspace
+
+# Contains private project names and collaborator details. Repo is public.
+skills/skill-repo-kanban.md
