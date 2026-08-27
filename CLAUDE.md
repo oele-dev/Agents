@@ -87,6 +87,7 @@ IMPORTANT: When you detect any of these contexts, IMMEDIATELY read the correspon
 |-------|---------|-------------|
 | `agents/agent-code.md` | Code generation | Writing new features, components, functions |
 | `agents/agent-review.md` | Code review | PR reviews, refactoring, security checks |
+| `agents/agent-security.md` | Deep security audit | Threat modeling, OWASP Top 10, secrets, authz/IDOR, dependency scan |
 | `agents/agent-debug.md` | Debugging | Error analysis, troubleshooting, fixes |
 | `agents/agent-e2e-test.md` | E2E Web Testing | Playwright page tests, filter/query verification |
 | `agents/agent-chrome-devtools.md` | Chrome DevTools live audit | Lighthouse, Core Web Vitals, network/console debug, memory snapshots |
