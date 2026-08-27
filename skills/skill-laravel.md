@@ -93,6 +93,60 @@ $condition
     : $this->doSomethingElse();
 ```
 
+## Method Design (Composed Method / Step-down)
+
+**Universal principle — applies to any class, not just controllers.**
+
+Every public method reads like prose: a high-level narrative at a single level of abstraction. Details live in private helpers below. The public method answers **WHAT**; private helpers answer **HOW**.
+
+Also known as: Extract Method (Fowler), Composed Method (Beck), Step-down rule (Clean Code), SLAP (Single Level of Abstraction Principle), SRP at method level.
+
+- One public method = one identifiable thing
+- All statements in a method at the same level of abstraction
+- Read top-to-bottom: public method first, helpers below in call order
+- Prefer descriptive private method names over comments
+
+```php
+public function store(StorePostRequest $request): RedirectResponse
+{
+    $post = $this->createPost($request->validated());
+
+    $this->notifySubscribers($post);
+
+    return redirect()->route('posts.show', $post);
+}
+
+private function createPost(array $data): Post
+{
+    return Post::create($data);
+}
+
+private function notifySubscribers(Post $post): void
+{
+    SubscriberNotifier::dispatch($post);
+}
+```
+
+Applies equally to Models, Services, Actions, Jobs, Commands, Listeners, Livewire components, etc.
+
+### When to extract a private helper
+Extract when **ANY** of these is true:
+- Public method exceeds ~15 lines
+- Method has 3+ distinct phases with nameable intent
+- The same block repeats elsewhere in the class (DRY)
+- A comment was about to be written — replace it with a descriptive helper name
+
+### When NOT to extract (anti-patterns)
+- **Single-use, <5-line helpers** that add pure indirection. Inline reads better.
+- **Linear, obvious code** with no distinguishable phases. Prose doesn't need chapters for 5 sentences.
+- **Helpers that share mutable instance state** between each other (temporal coupling) — that's a smell, not a step-down.
+- **"I want to test this helper"** → **extract to another class** (Action/Service), not a private method. Private helpers are implementation detail, not test units.
+
+### Class-level smell
+15 private helpers in one class ≠ SRP achieved. It usually means the class is doing too many things with prettier names. If Method Design starts feeling forced, the fix is **split the class**, not extract more helpers.
+
+**Default bias: aggressive step-down in Controllers (fat-controller antidote), conservative elsewhere.** Indirection has a cost — pay it only when it buys real readability.
+
 ## Laravel Conventions
 
 ### Routes
@@ -103,8 +157,30 @@ $condition
 
 ### Controllers
 - Plural resource names (`PostsController`)
-- Stick to CRUD methods (`index`, `create`, `store`, `show`, `edit`, `update`, `destroy`)
-- Extract new controllers for non-CRUD actions
+- **Only resource verbs**: `index`, `create`, `store`, `show`, `edit`, `update`, `destroy`. Nothing else.
+- **Non-CRUD actions → new controller.** Don't pollute a resource controller with extra methods.
+- **Single Action Controllers** use `__invoke`:
+  ```php
+  class PublishPostController extends Controller
+  {
+      public function __invoke(Post $post): RedirectResponse
+      {
+          // ...
+      }
+  }
+  ```
+- **Apply Composed Method / Step-down rule** (see *Method Design* section below). Controllers are where this matters most, but the principle is universal.
+
+### Private Helper vs Action Class
+- **Default: private helper in the controller.** Don't create an Action "just in case".
+- **Extract to Action class when ANY of these is true:**
+  1. A second caller needs the same logic (Command, Job, another Controller, Listener)
+  2. It manages a DB transaction, dispatches events, or calls external APIs
+  3. It encodes business rules that must be tested without HTTP
+  4. It needs to be dispatchable (queueable/async)
+- **Stays as helper**: request-shaping, response formatting, param mapping, trivial orchestration.
+- **Naming**: `CreatePostAction`, `PublishPostAction` (verb + noun + `Action`).
+- **Rule of thumb**: YAGNI. Private helper until it hurts — then extract.
 
 ### Configuration
 - Files: kebab-case (`pdf-generator.php`)
@@ -134,15 +210,26 @@ $condition
 
 ## Comments
 - **Avoid comments** - write expressive code instead
-- When needed, use proper formatting:
-  ```php
-  // Single line with space after //
-
-  /*
-   * Multi-line blocks start with single *
-   */
-  ```
 - Refactor comments into descriptive function names
+- When needed, follow **Taylor Otwell's comment style** (see [calebporzio.com/laravel-comments](https://calebporzio.com/laravel-comments)):
+  - Single line: `// Space after slashes`
+  - Multi-line: use `/* */` block with `|` pipe borders, a title with dashed separators, and a **three-line body** where each line is ~3 chars shorter:
+    - Line 1: ~74 characters
+    - Line 2: ~71 characters
+    - Line 3: ~68 characters
+    - Trailing periods are optional
+    ```php
+    /*
+    |--------------------------------------------------------------------------
+    | Title of the comment section
+    |--------------------------------------------------------------------------
+    |
+    | In Laravel, there are 598 three-line code comments. The first line of each
+    | is ~74 characters long. Each subsequent line has three characters fewer
+    | than the one above it. Whether trailing periods count is your choice.
+    |
+    */
+    ```
 
 ## Whitespace
 - Add blank lines between statements for readability
