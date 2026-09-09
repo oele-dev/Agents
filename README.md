@@ -10,7 +10,8 @@ This system uses **CLAUDE.md as the single source of truth**, with modular skill
 
 ```
 agents/
-├── CLAUDE.md                      # MAIN CONFIG (single source of truth)
+├── CLAUDE.md                      # MAIN CONFIG (philosophy, tools, behavior, tables)
+├── claude-shared.md               # Hard rules + delegation, @imported by both harness configs
 ├── AGENT.md                       # Project entry point (minimal, refs CLAUDE.md)
 ├── README.md                      # This file
 ├── skills/                        # Modular skill files
@@ -20,15 +21,31 @@ agents/
 │   ├── skill-react-inertia.md    # React + Inertia.js (RILT)
 │   ├── skill-tailwind.md         # Tailwind CSS patterns
 │   ├── skill-python-django.md    # Python/Django stack
-│   └── skill-ai-workflow.md      # AI-assisted dev patterns
-└── agents/                        # Task-based sub-agents
-    ├── agent-code.md             # Code generation specialist
-    ├── agent-review.md           # Code review and refactoring
-    └── agent-debug.md            # Debugging and troubleshooting
+│   ├── skill-ai-workflow.md      # AI-assisted dev patterns
+│   ├── skill-repo-kanban.md      # Repo-local kanban workflow
+│   ├── skill-research-sources.md # Source-quality scoring for research
+│   └── unslop/SKILL.md           # Strip AI tells from persisted prose (harness-linked)
+└── agents/                        # Sub-agents
+    ├── agent-code.md             # Code generation (native, harness-linked)
+    ├── agent-review.md           # Code review (native, harness-linked)
+    ├── agent-security.md         # Security audit (native, harness-linked)
+    ├── agent-e2e-test.md         # Tests and E2E (native, harness-linked)
+    ├── agent-research.md         # Internet research (native, harness-linked)
+    ├── agent-debug.md            # Debugging (docs only)
+    └── agent-chrome-devtools.md  # Browser debugging (docs only)
 
-~/.claude/
-└── CLAUDE.md                      # References main config in this repo
+~/.claude/                         # Personal harness config
+├── CLAUDE.md                      # @import claude-shared.md + @RTK.md
+├── agents/agent-*.md              # symlinks -> this repo's agents/
+└── skills/unslop                  # symlink  -> this repo's skills/unslop
+
+~/.claude-work/                    # Work harness config
+├── CLAUDE.md                      # @import claude-shared.md + work-only lines
+├── agents/agent-*.md              # symlinks -> ~/.claude/agents/
+└── skills/unslop                  # symlink  -> ~/.claude/skills/unslop
 ```
+
+This repo is the only place rules and agents are edited. The harness directories hold symlinks and `@import` pointers, nothing else. A real file in `~/.claude/agents/` or `~/.claude/skills/unslop` means drift.
 
 ## 🚀 Quick Start
 
@@ -40,9 +57,9 @@ agents/
 
 ### For Developers
 1. Clone this repository
-2. Ensure `~/.claude/CLAUDE.md` references this repo's `CLAUDE.md`
-3. Customize skills in `skills/` as needed for your projects
-4. Version control your configuration
+2. Point `~/.claude/CLAUDE.md` at this repo with `@/path/to/agents/claude-shared.md`
+3. Symlink `~/.claude/agents/agent-*.md` and `~/.claude/skills/unslop` to this repo
+4. Customize skills in `skills/` as needed for your projects
 
 ## 📚 Skills System
 
@@ -116,15 +133,15 @@ From `CLAUDE.md`:
 ## 🔧 Configuration
 
 ### Global Config
-`~/.claude/CLAUDE.md` references `/Users/oele/Developer/agents/CLAUDE.md` for complete configuration.
+`~/.claude/CLAUDE.md` and `~/.claude-work/CLAUDE.md` each `@import` `claude-shared.md` from this repo and add only their context-specific lines. Native subagents and the `unslop` skill reach the harness through symlinks into this repo.
 
 ### Project Config
 `AGENT.md` serves as the project entry point, loading `CLAUDE.md` and detecting skills.
 
 ### Customization
 - Edit skills in `skills/` for your patterns
-- Update `CLAUDE.md` for philosophy changes
-- Modify agents in `agents/` for task behaviors
+- Update `CLAUDE.md` for philosophy changes, `claude-shared.md` for hard rules
+- Modify agents in `agents/` for task behaviors (changes reach both harness configs at once)
 - All changes are version-controlled
 
 ## 📖 Usage Examples
