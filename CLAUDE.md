@@ -99,7 +99,7 @@ IMPORTANT: When you detect any of these contexts, IMMEDIATELY read the correspon
 - One agent = one small, single-responsibility task. If the task is big, split it into several agents.
 - No conflicts between parallel agents: they must not touch the same files or shared state. If they would, run them sequentially.
 - Prefer the specialized agents (`agent-code`, `agent-review`, `agent-security`, `agent-e2e-test`, `agent-research`) over a generic one.
-- Inject the needed skills into the agent prompt BEFORE launching it (e.g. frontend-design, copywriting, stack skills from `skills/`). Agents don't auto-load skills.
+- Inject the needed skills into the agent prompt BEFORE launching it. Stack skills live in `skills/`; design, copy and other skills live in `~/.claude/skills/` and installed plugins. Agents don't auto-load skills.
 - Agents use the `caveman` skill so their output stays compressed. That covers the report back to the main thread only.
 - If the agent writes prose into a file or a git object (README, docs, ADR, PR body, post, landing copy), inject `skills/skill-unslop.md` too. Caveman owns the report, unslop owns the artifact.
 
