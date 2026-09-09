@@ -73,7 +73,7 @@ IMPORTANT: When you detect any of these contexts, IMMEDIATELY read the correspon
 | AI Workflow | `skills/skill-ai-workflow.md` | AI-assisted patterns, prompting |
 | Repo Kanban | `skills/skill-repo-kanban.md` | ROADMAP.md, TABLERO.md, task boards, backlogs, project phases |
 | Research Sources | `skills/skill-research-sources.md` | Internet research (global, EN-first), idea validation, prior art, tool comparison, market/audience |
-| Unslop (prose) | `skills/skill-unslop.md` | Any prose that gets persisted or published: README, docs, ADR, PR/commit body, LinkedIn post, Ship Log, landing copy, client email |
+| Unslop (prose) | `skills/unslop/SKILL.md` | Any prose that gets persisted or published: README, docs, ADR, PR/commit body, LinkedIn post, Ship Log, landing copy, client email |
 
 ### How to use skills
 1. Detect context from user request or current file being edited
@@ -101,7 +101,7 @@ IMPORTANT: When you detect any of these contexts, IMMEDIATELY read the correspon
 - Prefer the specialized agents (`agent-code`, `agent-review`, `agent-security`, `agent-e2e-test`, `agent-research`) over a generic one.
 - Inject the needed skills into the agent prompt BEFORE launching it. Stack skills live in `skills/`; design, copy and other skills live in `~/.claude/skills/` and installed plugins. Agents don't auto-load skills.
 - Agents use the `caveman` skill so their output stays compressed. That covers the report back to the main thread only.
-- If the agent writes prose into a file or a git object (README, docs, ADR, PR body, post, landing copy), inject `skills/skill-unslop.md` too. Caveman owns the report, unslop owns the artifact.
+- If the agent writes prose into a file or a git object (README, docs, ADR, PR body, post, landing copy), inject `skills/unslop/SKILL.md` too. Caveman owns the report, unslop owns the artifact.
 
 ### Agent Behavior
 - **agent-code**: Load skills by stack, follow SOLID, explain before coding
